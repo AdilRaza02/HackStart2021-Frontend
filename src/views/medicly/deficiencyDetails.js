@@ -88,7 +88,7 @@ const DeficiencyDetailsView = () => {
     };
 
     const handleToArticles = () => {
-        console.log('to articles');
+        history.push(PATH_MEDICLY.main.articlesResult);
     };
 
     const goBack = () => {
@@ -116,21 +116,21 @@ const DeficiencyDetailsView = () => {
         <div className={classes.informationBox}>
             <div className={classes.information}>
                 <p className={classes.informationItems}><b>Unit</b></p>
-                <p>val</p>
+                <p>{currentDeficiency.unit}</p>
             </div>
             <div className={classes.information}>
                 <p className={classes.informationItems}><b>Normal</b></p>
-                <p>val</p>
+                <p>{currentDeficiency.normal}</p>
             </div>
             <div className={classes.information}>
                 <p className={classes.informationItems}><b>Your Value</b></p>
-                <p>val</p>
+                <p>{currentDeficiency.yours}</p>
             </div>
         </div>
         <Typography style={{ marginTop: '2rem' }} className={classes.typography} variant="h5" component="p">What If I had deficiency ?</Typography>
-        <Typography style={{ marginTop: '0.5rem' }} className={classes.typography} variant="p" component="p">{parameterExplanationState.deficiency_desc}</Typography>
+        <Typography style={{ marginTop: '0.5rem' }} className={classes.typography} variant="caption" component="p">{parameterExplanationState.deficiency_desc}</Typography>
         <Typography style={{ marginTop: '2rem' }} className={classes.typography} variant="h5" component="p">What If I had a surplus ?</Typography>
-        <Typography style={{ marginTop: '0.5rem' }} className={classes.typography} variant="p" component="p">{parameterExplanationState.surplus_desc}</Typography>
+        <Typography style={{ marginTop: '0.5rem' }} className={classes.typography} variant="caption" component="p">{parameterExplanationState.surplus_desc}</Typography>
         <Button style={{ marginTop: '2rem', width: '100%' }} variant="contained" onClick={() => handleToArticles()}>Read more</Button>
     </Container>
 };

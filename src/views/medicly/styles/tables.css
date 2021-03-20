@@ -1,0 +1,7 @@
+.MuiTableCell-root {
+    padding: 6px;
+}
+
+.MuiTable-root, .MuiTableHead-root,  .MuiTableBody-root{
+    overflow: hidden
+}

@@ -14,7 +14,7 @@ function Logo({ className, ...other }) {
       component="img"
       alt="logo"
       src="/static/brand/logo_single.svg"
-      height={64}
+      height={36}
       className={className}
       {...other}
     />

@@ -9,16 +9,55 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { Redirect } from 'react-router-dom';
 import {PATH_MEDICLY} from "../../routes/paths";
 
+// photo corners
+import cornerTopLeft from '@iconify-icons/radix-icons/corner-top-left';
+import cornerTopRight from '@iconify-icons/radix-icons/corner-top-right';
+import cornerBottomLeft from '@iconify-icons/radix-icons/corner-bottom-left';
+import cornerBottomRight from '@iconify-icons/radix-icons/corner-bottom-right';
+import { Icon, InlineIcon } from '@iconify/react';
+
 const useStyles = makeStyles(theme => ({
     main: {
-        minHeight: '100%'
+        height: 'calc(100vh - 64px)'
     },
     centeredloading: {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        width: '100vw',
-        height: '100%'
+        height: '100%',
+        width: '100vw'
+    },
+    cornerTopLeft: {
+      position: 'absolute',
+      top: '32px',
+      left: '46px',
+      width: '48px',
+      height: '48px',
+      color: 'white'
+    },
+    cornerTopRight: {
+        position: 'absolute',
+        top: '32px',
+        right: '46px',
+        width: '48px',
+        height: '48px',
+        color: 'white'
+    },
+    cornerBottomLeft: {
+        position: 'absolute',
+        bottom: '112px',
+        left: '46px',
+        width: '48px',
+        height: '48px',
+        color: 'white'
+    },
+    cornerBottomRight: {
+        position: 'absolute',
+        bottom: '112px',
+        right: '46px',
+        width: '48px',
+        height: '48px',
+        color: 'white'
     }
 }));
 
@@ -60,7 +99,7 @@ const PhotoComponent = () => {
         {status === 'loading' ? <div className={classes.centeredloading}><CircularProgress /></div> :
         (dataUri)
             ? <img className={classes.main} src={dataUri} />
-            : <Camera
+            : <div className={classes.main}><Camera
                 onTakePhoto = { (dataUri) => { handleTakePhoto(dataUri); } }
                 onTakePhotoAnimationDone = { (dataUri) => { handleTakePhotoAnimationDone(dataUri); } }
                 onCameraError = { (error) => { handleCameraError(error); } }
@@ -76,6 +115,11 @@ const PhotoComponent = () => {
                 onCameraStart = { (stream) => { handleCameraStart(stream); } }
                 onCameraStop = { () => { handleCameraStop(); } }
             />
+                <Icon className={classes.cornerTopLeft} icon={cornerTopLeft} />
+                <Icon className={classes.cornerTopRight} icon={cornerTopRight} />
+                <Icon className={classes.cornerBottomLeft} icon={cornerBottomLeft} />
+                <Icon className={classes.cornerBottomRight} icon={cornerBottomRight} />
+        </div>
     }</>
 };
 

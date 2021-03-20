@@ -28,6 +28,8 @@ import {PATH_MEDICLY} from "../../routes/paths";
 import {Redirect} from "react-router";
 import { useHistory } from 'react-router-dom'
 
+import './styles/tables.css';
+
 const useRowStyles = makeStyles({
     root: {
         '& > *': {
@@ -54,16 +56,17 @@ const useRowStyles = makeStyles({
     },
 
     table: {
-        marginTop: '2rem'
+        marginTop: '2rem',
+        padding: '0px'
     }
 });
 
 
-function createData(name, calories, fat, yours, deficient) {
+function createData(name, unit, normal, yours, deficient) {
     return {
         name,
-        calories,
-        fat,
+        unit,
+        normal,
         yours,
         deficient,
         history: [
@@ -99,30 +102,26 @@ function Row(props) {
         history.push(PATH_MEDICLY.main.deficiencyDetails);
     };
 
-    const goBack = () => {
-        history.push(PATH_MEDICLY.main.deficiencies);
-    };
-
     return (
         <React.Fragment>
             <TableRow className={classes.root}>
-                <TableCell component="th" scope="row">
+                <TableCell style={{ paddingLeft: '0px' }} scope="row">
                     <b>{row.name}</b>
                 </TableCell>
-                <TableCell align="right">{row.calories}</TableCell>
-                <TableCell align="right">{row.fat}</TableCell>
+                <TableCell align="right">{row.unit}</TableCell>
+                <TableCell align="right">{row.normal}</TableCell>
                 { row.deficient ? <TableCell style={{ color: '#FF4842' }} align="right">{row.yours}</TableCell> : <TableCell align="right"> {row.yours}</TableCell> }
-                <TableCell>
+                <TableCell style={{ paddingRight: '0px' }}>
                     <IconButton
                         aria-label="expand row"
                         size="small"
                         onClick={() => { getParameterByTitle(row.name) && setOpen(!open) }}
                     >
-                        { row.deficient && <Fab style={{ backgroundColor: '#FF4842' }} size="small" aria-label="add">
-                            { getParameterByTitle(row.name) ?  open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon color="white" /> : <KeyboardArrowRightIcon color="white" onClick={() => handleToDetails(row)} /> }
+                        { row.deficient && <Fab style={{ backgroundColor: '#FF4842', width: '32px', height: '32px' }} size="small" aria-label="add">
+                            { getParameterByTitle(row.name) ?  open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon color="white" /> : <KeyboardArrowRightIcon color="white" /> }
                         </Fab> }
-                        { !row.deficient && <Fab style={{ backgroundColor: '#54D62C' }} size="small" aria-label="add">
-                            { getParameterByTitle(row.name) ?  open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon color="white" /> : <KeyboardArrowRightIcon color="white" onClick={() => handleToDetails(row)} /> }
+                        { !row.deficient && <Fab style={{ backgroundColor: '#54D62C', width: '32px', height: '32px' }} size="small" aria-label="add">
+                            { getParameterByTitle(row.name) ?  open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon color="white" /> : <KeyboardArrowRightIcon color="white" /> }
                         </Fab> }
                     </IconButton>
                 </TableCell>
@@ -148,9 +147,9 @@ function Row(props) {
 
 const rows = [
     createData('Leukocyten', 159, 6.0, 24, true),
-    createData('Entrythrocyten', 237, 9.0, 37, false),
-    createData('Hämoglobin', 262, 16.0, 24, true),
-    createData('Hämatokrit', 305, 3.7, 67, false)
+    createData('Erythrocyten', 237, 9.0, 37, false),
+    createData('Hemoglobin', 262, 16.0, 24, true),
+    createData('Hematocrit', 305, 3.7, 67, false)
 ];
 
 
@@ -162,6 +161,8 @@ const DeficienciesView = () => {
 
     const dispatch = useDispatch();
 
+    const history = useHistory();
+
     useEffect(() => {
         dispatch(fetchDeficiencies());
         dispatch(fetchParameterExplanation());
@@ -171,6 +172,12 @@ const DeficienciesView = () => {
         console.log(deficiencies);
     }, [deficiencies]);
 
+
+    const goBack = () => {
+        dispatch(photoSlice.actions.resetBloodTestPhoto());
+        history.push(PATH_MEDICLY.main.photo);
+    };
+
     return deficiencies && <Container
         className={classes.container}
         maxWidth="md"
@@ -178,7 +185,7 @@ const DeficienciesView = () => {
     >
         <div className={classes.topSection}>
             <div>
-               <Fab on size="small" color="primary" aria-label="add">
+               <Fab onClick={goBack} size="small" color="primary" aria-label="add">
                     <ArrowBackIosRoundedIcon color="white" />
                 </Fab>
             </div>
@@ -191,12 +198,12 @@ const DeficienciesView = () => {
             <Table aria-label="collapsible table">
                 <TableHead>
                     <TableRow>
-                        <TableCell />
+                        <TableCell style={{ paddingLeft: '0px' }} />
                         <TableCell>Unit</TableCell>
                         <TableCell align="right">Normal</TableCell>
                         <TableCell align="right">Yours</TableCell>
                         <TableCell />
-                        <TableCell />
+                        <TableCell style={{ paddingRight: '0px' }} />
                     </TableRow>
                 </TableHead>
                 <TableBody>

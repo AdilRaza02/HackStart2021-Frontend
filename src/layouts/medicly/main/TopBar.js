@@ -58,16 +58,9 @@ function TopBar({ onOpenNav, className }) {
   return (
     <AppBar className={clsx(classes.root, className)}>
       <Toolbar className={classes.toolbar}>
-        {/*<Hidden mdUp>*/}
-          {/*<IconButton onClick={onOpenNav} color="inherit">*/}
-            {/*<Icon icon={menu2Fill} />*/}
-          {/*</IconButton>*/}
-        {/*</Hidden>*/}
-        <Hidden mdDown>
-          <RouterLink to="/">
-            <Logo />
-          </RouterLink>
-        </Hidden>
+        <RouterLink to="/">
+          <Logo />
+        </RouterLink>
 
         <Box sx={{ flexGrow: 1 }} />
 

@@ -16,7 +16,6 @@ const useStyles = makeStyles(theme => ({
     main: {
         marginTop: '64px',
         position: 'relative',
-        height: 'calc(100vh - 64px)',
         width: '100%'
     }
 }));

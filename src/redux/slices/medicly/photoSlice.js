@@ -30,6 +30,12 @@ const slice = createSlice({
             state.bloodTestPhoto = action.payload;
         },
 
+        resetBloodTestPhoto: (state, action) => {
+            state.bloodTestPhoto = null;
+            state.status = "idle";
+        },
+
+
         setDeficiency: (state, action) => {
           state.currentDeficiency = action.payload
         },
