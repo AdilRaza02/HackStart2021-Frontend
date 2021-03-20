@@ -16,7 +16,8 @@ const useStyles = makeStyles(theme => ({
     main: {
         marginTop: '64px',
         position: 'relative',
-        height: 'calc(100vh - 64px)'
+        height: 'calc(100vh - 64px)',
+        width: '100%'
     }
 }));
 
@@ -33,7 +34,6 @@ function DocsLayout({children}) {
     return (
         <div className={classes.root}>
             <TopBar onOpenNav={() => setOpenNav(true)}/>
-            <NavBar onCloseNav={() => setOpenNav(false)} isOpenNav={openNav}/>
 
             <div
             className={classes.main}

@@ -1,6 +1,7 @@
 // import axios from 'axios';
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import deficienciesMockup from '~/_mock_api_/medicly/deficiencies';
+import axios from 'axios'
 
 // ----------------------------------------------------------------------
 
@@ -10,11 +11,7 @@ const initialState = {
 };
 
 export const fetchDeficiencies = createAsyncThunk('deficiencies/fetchDeficiencies', async () => {
-    return new Promise((resolve, reject)=>{
-        setTimeout(() => {
-            resolve(deficienciesMockup);
-        },2000);
-    });
+        return await axios.get('https://x8ki-letl-twmt.n7.xano.io/api:0QqfemBK/test_parameters');
 });
 
 
@@ -37,7 +34,7 @@ const slice = createSlice({
         },
         [fetchDeficiencies.fulfilled]: (state, action) => {
             state.status = 'succeeded';
-            state.profile = action.payload.data;
+            state.deficiencies = action.payload.data;
         },
         [fetchDeficiencies.rejected]: (state, action) => {
             state.status = 'failed';

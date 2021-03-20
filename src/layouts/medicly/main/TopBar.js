@@ -21,6 +21,7 @@ import {
   IconButton
 } from '@material-ui/core';
 import { MIconButton } from '~/@material-extend';
+import MedicalServicesOutlinedIcon from '@material-ui/icons/MedicalServicesOutlined';
 
 // ----------------------------------------------------------------------
 
@@ -57,11 +58,11 @@ function TopBar({ onOpenNav, className }) {
   return (
     <AppBar className={clsx(classes.root, className)}>
       <Toolbar className={classes.toolbar}>
-        <Hidden mdUp>
-          <IconButton onClick={onOpenNav} color="inherit">
-            <Icon icon={menu2Fill} />
-          </IconButton>
-        </Hidden>
+        {/*<Hidden mdUp>*/}
+          {/*<IconButton onClick={onOpenNav} color="inherit">*/}
+            {/*<Icon icon={menu2Fill} />*/}
+          {/*</IconButton>*/}
+        {/*</Hidden>*/}
         <Hidden mdDown>
           <RouterLink to="/">
             <Logo />
@@ -78,14 +79,14 @@ function TopBar({ onOpenNav, className }) {
           <Icon icon={darkMode ? sunFill : moonFill} width={20} height={20} />
         </MIconButton>
 
-        <Button
-          disableRipple
-          to={PATH_APP.root}
-          component={RouterLink}
-          endIcon={<Icon icon={arrowIosForwardFill} />}
-        >
-          Dashboard
-        </Button>
+        {/*<Button*/}
+          {/*disableRipple*/}
+          {/*to={PATH_APP.root}*/}
+          {/*component={RouterLink}*/}
+          {/*endIcon={<Icon icon={arrowIosForwardFill} />}*/}
+        {/*>*/}
+          {/*Dashboard*/}
+        {/*</Button>*/}
       </Toolbar>
     </AppBar>
   );
