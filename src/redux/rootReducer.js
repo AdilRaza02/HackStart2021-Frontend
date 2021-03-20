@@ -11,6 +11,7 @@ import blogReducer from './slices/theme/blog';
 import productReducer from './slices/theme/product';
 import userReducer from './slices/theme/user';
 import notificationsReducer from './slices/theme/notifications';
+import photoSlice from './slices/medicly/photoSlice';
 
 // ----------------------------------------------------------------------
 
@@ -54,6 +55,7 @@ const rootReducer = combineReducers({
   product: persistReducer(productPersistConfig, productReducer),
   user: userReducer,
   notifications: notificationsReducer,
+  bloodTestPhoto: photoSlice.reducer
 });
 
 export { rootPersistConfig, rootReducer };

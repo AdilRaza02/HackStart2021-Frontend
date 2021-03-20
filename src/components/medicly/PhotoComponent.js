@@ -3,10 +3,20 @@ import Camera, { FACING_MODES, IMAGE_TYPES } from 'react-html5-camera-photo';
 import 'react-html5-camera-photo/build/css/index.css';
 import './styles/imagePreview.css';
 import {makeStyles} from '@material-ui/core/styles';
+import { useSelector, useDispatch } from "react-redux";
+import photoSlice, { fetchDeficiencies } from '~/redux/slices/medicly/photoSlice'
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = makeStyles(theme => ({
     main: {
         minHeight: '100%'
+    },
+    centeredloading: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '100vw',
+        height: '100%'
     }
 }));
 
@@ -16,8 +26,14 @@ const PhotoComponent = () => {
 
     const [dataUri, setDataUri] = useState('');
 
+    const dispatch = useDispatch();
+
+    const { status } = useSelector(store => store.bloodTestPhoto);
+
     const handleTakePhoto = (dataUri) => {
         setDataUri(dataUri);
+        dispatch(photoSlice.actions.setBloodTestPhoto(dataUri));
+        dispatch(fetchDeficiencies(dataUri));
     };
 
     function handleTakePhotoAnimationDone (dataUri) {
@@ -37,7 +53,8 @@ const PhotoComponent = () => {
         console.log('handleCameraStop');
     }
 
-    return <>{
+    return <>
+        {status === 'loading' ? <div className={classes.centeredloading}><CircularProgress /></div> :
         (dataUri)
             ? <img className={classes.main} src={dataUri} />
             : <Camera
