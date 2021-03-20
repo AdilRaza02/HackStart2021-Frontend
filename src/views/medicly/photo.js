@@ -1,11 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
+import PhotoComponent from '~/components/medicly/PhotoComponent'
 
 const PhotoView = () => {
 
-    return <div>
-        <h1> Photo </h1>
-    </div>
+    return <PhotoComponent />
 };
 
 export default PhotoView;
