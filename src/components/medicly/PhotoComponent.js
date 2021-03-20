@@ -6,6 +6,8 @@ import {makeStyles} from '@material-ui/core/styles';
 import { useSelector, useDispatch } from "react-redux";
 import photoSlice, { fetchDeficiencies } from '~/redux/slices/medicly/photoSlice'
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { Redirect } from 'react-router-dom';
+import {PATH_MEDICLY} from "../../routes/paths";
 
 const useStyles = makeStyles(theme => ({
     main: {
@@ -54,6 +56,7 @@ const PhotoComponent = () => {
     }
 
     return <>
+        {status === 'succeeded' && <Redirect to={PATH_MEDICLY.main.deficiencies} />}
         {status === 'loading' ? <div className={classes.centeredloading}><CircularProgress /></div> :
         (dataUri)
             ? <img className={classes.main} src={dataUri} />
