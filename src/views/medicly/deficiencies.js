@@ -23,7 +23,10 @@ import Fab from '@material-ui/core/Fab';
 import Button from '@material-ui/core/Button';
 
 // redux
-import { fetchDeficiencies } from '~/redux/slices/medicly/photoSlice'
+import photoSlice, { fetchDeficiencies, fetchParameterExplanation } from '~/redux/slices/medicly/photoSlice'
+import {PATH_MEDICLY} from "../../routes/paths";
+import {Redirect} from "react-router";
+import { useHistory } from 'react-router-dom'
 
 const useRowStyles = makeStyles({
     root: {
@@ -82,10 +85,22 @@ function Row(props) {
     const { row, deficiencies } = props;
     const [open, setOpen] = React.useState(false);
     const classes = useRowStyles();
+    const history = useHistory();
+    const dispatch = useDispatch();
 
     const getParameterByTitle = (title) => {
         console.log(deficiencies.find(parameterItem => parameterItem.name === title));
         return deficiencies.find(parameterItem => parameterItem.name === title)
+    };
+
+    const handleToDetails = (row) => {
+        // todo: add to slice
+        dispatch(photoSlice.actions.setDeficiency(row));
+        history.push(PATH_MEDICLY.main.deficiencyDetails);
+    };
+
+    const goBack = () => {
+        history.push(PATH_MEDICLY.main.deficiencies);
     };
 
     return (
@@ -104,10 +119,10 @@ function Row(props) {
                         onClick={() => { getParameterByTitle(row.name) && setOpen(!open) }}
                     >
                         { row.deficient && <Fab style={{ backgroundColor: '#FF4842' }} size="small" aria-label="add">
-                            { getParameterByTitle(row.name) ?  open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon color="white" /> : <KeyboardArrowRightIcon color="white" /> }
+                            { getParameterByTitle(row.name) ?  open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon color="white" /> : <KeyboardArrowRightIcon color="white" onClick={() => handleToDetails(row)} /> }
                         </Fab> }
                         { !row.deficient && <Fab style={{ backgroundColor: '#54D62C' }} size="small" aria-label="add">
-                            { getParameterByTitle(row.name) ?  open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon color="white" /> : <KeyboardArrowRightIcon color="white" /> }
+                            { getParameterByTitle(row.name) ?  open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon color="white" /> : <KeyboardArrowRightIcon color="white" onClick={() => handleToDetails(row)} /> }
                         </Fab> }
                     </IconButton>
                 </TableCell>
@@ -122,7 +137,7 @@ function Row(props) {
                             <Typography variant="p" gutterBottom component="div">
                                 {getParameterByTitle(row.name) && getParameterByTitle(row.name).simple_definition}
                             </Typography>
-                            <Button >Read more</Button>
+                            <Button onClick={() => handleToDetails(row)}>Read more</Button>
                         </Box>
                     </Collapse>
                 </TableCell>
@@ -149,6 +164,7 @@ const DeficienciesView = () => {
 
     useEffect(() => {
         dispatch(fetchDeficiencies());
+        dispatch(fetchParameterExplanation());
     }, []);
 
     useEffect(() => {
@@ -162,7 +178,7 @@ const DeficienciesView = () => {
     >
         <div className={classes.topSection}>
             <div>
-               <Fab size="small" color="primary" aria-label="add">
+               <Fab on size="small" color="primary" aria-label="add">
                     <ArrowBackIosRoundedIcon color="white" />
                 </Fab>
             </div>

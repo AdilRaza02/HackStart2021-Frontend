@@ -7,11 +7,18 @@ import axios from 'axios'
 
 const initialState = {
     status: 'idle',
-    deficiencies: null,
+    deficiencies: [],
+    parameterExplanation: [],
+    currentDeficiency: {}
 };
 
 export const fetchDeficiencies = createAsyncThunk('deficiencies/fetchDeficiencies', async () => {
         return await axios.get('https://x8ki-letl-twmt.n7.xano.io/api:0QqfemBK/test_parameters');
+});
+
+
+export const fetchParameterExplanation = createAsyncThunk('deficiencies/fetchParameterExplanation', async () => {
+    return await axios.get('https://x8ki-letl-twmt.n7.xano.io/api:0QqfemBK/test_parameters_explanation');
 });
 
 
@@ -21,6 +28,10 @@ const slice = createSlice({
     reducers: {
         setBloodTestPhoto: (state, action) => {
             state.bloodTestPhoto = action.payload;
+        },
+
+        setDeficiency: (state, action) => {
+          state.currentDeficiency = action.payload
         },
 
         hasError(state, action) {
@@ -37,6 +48,19 @@ const slice = createSlice({
             state.deficiencies = action.payload.data;
         },
         [fetchDeficiencies.rejected]: (state, action) => {
+            state.status = 'failed';
+            state.error = action.error.message
+        },
+
+        [fetchParameterExplanation.pending]: (state, action) => {
+            state.status = 'loading'
+        },
+        [fetchParameterExplanation.fulfilled]: (state, action) => {
+            state.status = 'succeeded';
+            console.log(action.payload.data);
+            state.parameterExplanation = action.payload.data;
+        },
+        [fetchParameterExplanation.rejected]: (state, action) => {
             state.status = 'failed';
             state.error = action.error.message
         }

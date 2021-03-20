@@ -55,7 +55,7 @@ const rootReducer = combineReducers({
   product: persistReducer(productPersistConfig, productReducer),
   user: userReducer,
   notifications: notificationsReducer,
-  bloodTestPhoto: photoSlice.reducer
+  bloodTestPhoto:  persistReducer(productPersistConfig, photoSlice.reducer),
 });
 
 export { rootPersistConfig, rootReducer };
