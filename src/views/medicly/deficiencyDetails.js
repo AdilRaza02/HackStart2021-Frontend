@@ -9,6 +9,7 @@ import { fetchDeficiencies, fetchParameterExplanation } from '~/redux/slices/med
 import Button from '@material-ui/core/Button';
 import { useHistory } from 'react-router-dom'
 import {PATH_MEDICLY} from "~/routes/paths";
+import TableCell from "./deficiencies";
 
 const useRowStyles = makeStyles({
     root: {
@@ -124,12 +125,14 @@ const DeficiencyDetailsView = () => {
             </div>
             <div className={classes.information}>
                 <p className={classes.informationItems}><b>Your Value</b></p>
-                <p>{currentDeficiency.yours}</p>
+                { currentDeficiency.deficient ? <p style={{ color: '#FF4842' }}>{currentDeficiency.yours}</p> : <p>{currentDeficiency.yours}</p> }
             </div>
         </div>
-        <Typography style={{ marginTop: '2rem' }} className={classes.typography} variant="h5" component="p">What If I had deficiency ?</Typography>
+        {!currentDeficiency.deficient && <Typography style={{ marginTop: '2rem' }} className={classes.typography} variant="h5" component="p">What If I had deficiency ?</Typography>}
+        {currentDeficiency.deficient && <Typography style={{ marginTop: '2rem' }} className={classes.typography} variant="h5" component="p">What does that mean ?</Typography>}
         <Typography style={{ marginTop: '0.5rem' }} className={classes.typography} variant="caption" component="p">{parameterExplanationState.deficiency_desc}</Typography>
-        <Typography style={{ marginTop: '2rem' }} className={classes.typography} variant="h5" component="p">What If I had a surplus ?</Typography>
+        {currentDeficiency.surplus && <Typography style={{ marginTop: '2rem' }} className={classes.typography} variant="h5" component="p">What does that mean ?</Typography>}
+        {!currentDeficiency.surplus && <Typography style={{ marginTop: '2rem' }} className={classes.typography} variant="h5" component="p">What If I had a surplus ?</Typography>}
         <Typography style={{ marginTop: '0.5rem' }} className={classes.typography} variant="caption" component="p">{parameterExplanationState.surplus_desc}</Typography>
         <Button style={{ marginTop: '2rem', width: '100%' }} variant="contained" onClick={() => handleToArticles()}>Read more</Button>
     </Container>

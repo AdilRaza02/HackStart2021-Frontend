@@ -4,10 +4,12 @@ import 'react-html5-camera-photo/build/css/index.css';
 import './styles/imagePreview.css';
 import {makeStyles} from '@material-ui/core/styles';
 import { useSelector, useDispatch } from "react-redux";
-import photoSlice, { fetchDeficiencies } from '~/redux/slices/medicly/photoSlice'
+import photoSlice, { fetchDeficiencies, fetchDeficienciesData } from '~/redux/slices/medicly/photoSlice'
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { Typography, Box } from '@material-ui/core';
 import { Redirect } from 'react-router-dom';
 import {PATH_MEDICLY} from "../../routes/paths";
+import testResultImage from "~/_mock_api_/result_imgs/CBC-Test-Results-1.jpg";
 
 // photo corners
 import cornerTopLeft from '@iconify-icons/radix-icons/corner-top-left';
@@ -71,9 +73,23 @@ const PhotoComponent = () => {
 
     const { status } = useSelector(store => store.bloodTestPhoto);
 
+    const dataURLtoFile = (dataurl, filename) => {
+        const arr = dataurl.split(',')
+        const mime = arr[0].match(/:(.*?);/)[1]
+        const bstr = atob(arr[1])
+        let n = bstr.length
+        const u8arr = new Uint8Array(n)
+        while (n) {
+            u8arr[n - 1] = bstr.charCodeAt(n - 1)
+            n -= 1 // to make eslint happy
+        }
+        return new File([u8arr], filename, { type: mime })
+    }
+
     const handleTakePhoto = (dataUri) => {
         setDataUri(dataUri);
         dispatch(photoSlice.actions.setBloodTestPhoto(dataUri));
+        // dispatch(fetchDeficienciesData(dataURLtoFile(dataUri, 'blood-report.jpeg')));
         dispatch(fetchDeficiencies(dataUri));
     };
 
@@ -104,7 +120,7 @@ const PhotoComponent = () => {
                 onTakePhotoAnimationDone = { (dataUri) => { handleTakePhotoAnimationDone(dataUri); } }
                 onCameraError = { (error) => { handleCameraError(error); } }
                 idealFacingMode = {FACING_MODES.USER}
-                imageType = {IMAGE_TYPES.BASE64}
+                imageType = {IMAGE_TYPES.JPG}
                 imageCompression = {0.97}
                 isMaxResolution = {true}
                 isImageMirror = {false}
@@ -115,6 +131,12 @@ const PhotoComponent = () => {
                 onCameraStart = { (stream) => { handleCameraStart(stream); } }
                 onCameraStop = { () => { handleCameraStop(); } }
             />
+                <Typography gutterBottom variant="subtitle2" style={{ position: 'absolute', left: '0',
+                    right: '0',
+                    marginLeft: 'auto',
+                    marginRight: 'auto', width: '150px', textAlign: 'center', fontSize: '16px',   top: '32px', color: 'white' }} color="textSecondary">
+                    Scan Blood Report
+                </Typography>
                 <Icon className={classes.cornerTopLeft} icon={cornerTopLeft} />
                 <Icon className={classes.cornerTopRight} icon={cornerTopRight} />
                 <Icon className={classes.cornerBottomLeft} icon={cornerBottomLeft} />

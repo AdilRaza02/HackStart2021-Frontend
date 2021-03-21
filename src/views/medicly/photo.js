@@ -3,7 +3,6 @@ import {useDispatch, useSelector} from "react-redux";
 import PhotoComponent from '~/components/medicly/PhotoComponent'
 
 const PhotoView = () => {
-
     return <PhotoComponent />
 };
 

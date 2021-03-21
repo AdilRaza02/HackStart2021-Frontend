@@ -21,6 +21,7 @@ import ArrowBackIosRoundedIcon from '@material-ui/icons/ArrowBackIosRounded';
 import NavigateNextRoundedIcon from '@material-ui/icons/NavigateNextRounded';
 import Fab from '@material-ui/core/Fab';
 import Button from '@material-ui/core/Button';
+import faker from 'faker';
 
 // redux
 import photoSlice, { fetchDeficiencies, fetchParameterExplanation } from '~/redux/slices/medicly/photoSlice'
@@ -62,25 +63,14 @@ const useRowStyles = makeStyles({
 });
 
 
-function createData(name, unit, normal, yours, deficient) {
+function createData(name, unit, normal, yours, deficient, surplus) {
     return {
         name,
         unit,
         normal,
         yours,
         deficient,
-        history: [
-            {
-                date: '2020-01-05',
-                customerId: '11091700',
-                amount: 3,
-            },
-            {
-                date: '2020-01-02',
-                customerId: 'Anonymous',
-                amount: 1,
-            },
-        ],
+        surplus
     };
 }
 
@@ -97,6 +87,7 @@ function Row(props) {
     };
 
     const handleToDetails = (row) => {
+        console.log('row', row);
         // todo: add to slice
         dispatch(photoSlice.actions.setDeficiency(row));
         history.push(PATH_MEDICLY.main.deficiencyDetails);
@@ -117,10 +108,10 @@ function Row(props) {
                         size="small"
                         onClick={() => { getParameterByTitle(row.name) && setOpen(!open) }}
                     >
-                        { row.deficient && <Fab style={{ backgroundColor: '#FF4842', width: '32px', height: '32px' }} size="small" aria-label="add">
+                        { (row.deficient || row.surplus) && <Fab style={{ backgroundColor: '#FF4842', width: '32px', height: '32px' }} size="small" aria-label="add">
                             { getParameterByTitle(row.name) ?  open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon color="white" /> : <KeyboardArrowRightIcon color="white" /> }
                         </Fab> }
-                        { !row.deficient && <Fab style={{ backgroundColor: '#54D62C', width: '32px', height: '32px' }} size="small" aria-label="add">
+                        { !(row.deficient || row.surplus) && <Fab style={{ backgroundColor: '#54D62C', width: '32px', height: '32px' }} size="small" aria-label="add">
                             { getParameterByTitle(row.name) ?  open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon color="white" /> : <KeyboardArrowRightIcon color="white" /> }
                         </Fab> }
                     </IconButton>
@@ -145,23 +136,32 @@ function Row(props) {
     );
 }
 
-const rows = [
-    createData('Leukocyten', 159, 6.0, 24, true),
-    createData('Erythrocyten', 237, 9.0, 37, false),
-    createData('Hemoglobin', 262, 16.0, 24, true),
-    createData('Hematocrit', 305, 3.7, 67, false)
-];
-
 
 const DeficienciesView = () => {
 
     const classes = useRowStyles();
 
-    const { deficiencies, status } = useSelector(store => store.bloodTestPhoto);
+    const { deficiencies, status, resultData } = useSelector(store => store.bloodTestPhoto);
 
     const dispatch = useDispatch();
 
     const history = useHistory();
+
+    const rows = () => {
+        console.log('resultData', resultData);
+        if (!resultData) {
+            const rowsFilterArray = ['Leukocyten', 'Erythrocyten', 'Hemoglobin', 'Hemotrocrit', 'MCV', 'MCH', 'MCHC', 'RDW', 'Platelet Count', 'MPV'];
+            console.log(rowsFilterArray);
+            const filteredDeficencies = deficiencies.filter(item => rowsFilterArray.includes(item.name))
+            const newResultData = filteredDeficencies.map(item => {
+                const yours = faker.random.number({ 'min': item.min_range-10, 'max': item.max_range+10 });
+                return  createData(item.name, item.unit, item.min_range + '-' + item.max_range, yours, yours < item.min_range , yours > item.max_range);
+            });
+            dispatch(photoSlice.actions.setResultData(newResultData));
+            return newResultData;
+        }
+        return resultData;
+    };
 
     useEffect(() => {
         dispatch(fetchDeficiencies());
@@ -207,7 +207,7 @@ const DeficienciesView = () => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {rows.map((row) => (
+                    {rows().map((row) => (
                         <Row key={row.name} row={row} deficiencies={deficiencies} />
                     ))}
                 </TableBody>
