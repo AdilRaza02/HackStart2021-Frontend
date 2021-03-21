@@ -1,3 +1,13 @@
+Welcome to Medicly!
+
+## Overview
+- Frontend: https://github.com/AdilRaza02/Medicly-Frontend
+- Backend: https://github.com/AdilRaza02/Medicly-Backend
+
+[<img src="https://i.imgur.com/ZUoxMSE.png">](https://i.imgur.com/ZUoxMSE.png)
+
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
